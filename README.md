@@ -26,7 +26,7 @@ And build:
 cmake --build ${YOUR_BUILD_FOLDER}
 ```
 
-###Link to libraries I used
+### Link to libraries I used
 
 SFML https://github.com/SFML/SFML
 
