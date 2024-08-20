@@ -11,6 +11,8 @@ It's only able to build using MinGW and can be executed with bash
 Also you can view this project as example of usage Modern OpenGL
 
 
+I will add some more things to this project in the future
+
 
 ## How to build
 To build the project, first clone it into your folder:
