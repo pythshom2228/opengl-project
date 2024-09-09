@@ -5,7 +5,7 @@ This is my study project that using Modern OpenGL
 This project includes SFML, GLEW, GLM and stb_image
 
 
-It's only able to build using MinGW and can be executed with bash
+It's only able to build using MinGW and can be executed with MSYS2 bash
 
 
 Also you can view this project as example of usage Modern OpenGL
