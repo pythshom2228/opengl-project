@@ -2,7 +2,6 @@
   "dependencies": [
     "sfml",
     "glew",
-    "glm",
-    "stb"
-    ]
+    "glm"
+  ]
 }
