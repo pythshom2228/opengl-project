@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.29)
-#TODO
-#Build Debug and Release dirs 
+
 
 set(PROJECT_NAME app)
 project(${PROJECT_NAME} LANGUAGES CXX)
@@ -14,7 +13,11 @@ set( RESOURCES_DIR "${LOCAL_PATH}")
 file(COPY "res" DESTINATION ${RESOURCES_DIR})
 
 set(SOURCE "src/main.cpp")
-add_executable(${PROJECT_NAME} ${SOURCE})
+set(SHADER_SOURCE "src/Shaders.cpp")
+add_executable(${PROJECT_NAME} 
+    ${SOURCE} 
+    ${SHADER_SOURCE}
+)
 
 find_package(SFML 2.6.1 COMPONENTS window REQUIRED)
 target_link_libraries(${PROJECT_NAME} sfml-window)

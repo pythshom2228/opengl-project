@@ -1,2 +1,5 @@
 .vscode/
 build/
+vcpkg/
+TODO
+run.sh

@@ -1,19 +1,22 @@
-#pragma once
-#include <GL/glew.h>
-#include <fstream>
-#include <sstream>
+#include "include/Shaders.h"
 
-struct ShaderProgramSource
-{
-    std::string VertexSource;
-    std::string FragmentSource;
-};
+Shader::Shader(const std::string& filePath) {
+    source = parseShader(filePath);
+    shaderID = CreateShader(source.VertexSource,source.FragmentSource);
+}
 
+Shader::~Shader() {
+    glDeleteProgram(shaderID);
+}
 
-ShaderProgramSource parseShader(const std::string& filepath) {
-    std::ifstream stream(filepath);
+void Shader::applyShader() {
+    glUseProgram(shaderID);
+}
+
+Shader::ShaderProgramSource Shader::parseShader(const std::string& filePath) {
+    std::ifstream stream(filePath);
     if(!stream.is_open()) std::cout << "error";
-    
+        
     enum class ShaderType {
         NONE = -1,
         VERTEX = 0,
@@ -39,8 +42,7 @@ ShaderProgramSource parseShader(const std::string& filepath) {
     return {ss[0].str(), ss[1].str()};
 }
 
-
-unsigned int CompileShader(unsigned int type, const std::string& source) {
+unsigned int Shader::CompileShader(unsigned int type, const std::string& source) {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
     glShaderSource(id,1,&src,nullptr);
@@ -62,7 +64,7 @@ unsigned int CompileShader(unsigned int type, const std::string& source) {
     return id;
 }
 
-unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
+unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
     unsigned int program = glCreateProgram();
     unsigned int vs = CompileShader(GL_VERTEX_SHADER,vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER,fragmentShader);
@@ -75,5 +77,4 @@ unsigned int CreateShader(const std::string& vertexShader, const std::string& fr
     glDeleteShader(vs);
     glDeleteShader(fs);
     return program;
-
 }
