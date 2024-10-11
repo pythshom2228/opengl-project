@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.29)
 
+if(${CMAKE_GENERATOR} MATCHES "MinGW Makefiles")
+    set(VCPKG_TARGET_TRIPLET "x64-mingw-static" CACHE STRING "target triplet" FORCE)
+endif()
 
 set(PROJECT_NAME app)
 project(${PROJECT_NAME} LANGUAGES CXX)
@@ -12,12 +15,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${LOCAL_PATH}/bin")
 set( RESOURCES_DIR "${LOCAL_PATH}")
 file(COPY "res" DESTINATION ${RESOURCES_DIR})
 
-set(SOURCE "src/main.cpp")
-set(SHADER_SOURCE "src/Shaders.cpp")
-add_executable(${PROJECT_NAME} 
-    ${SOURCE} 
-    ${SHADER_SOURCE}
-)
+set(SOURCE "src/*.cpp")
+add_executable(${PROJECT_NAME} ${SOURCE})
 
 find_package(SFML 2.6.1 COMPONENTS window REQUIRED)
 target_link_libraries(${PROJECT_NAME} sfml-window)
