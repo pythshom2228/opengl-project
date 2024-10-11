@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#define SHADER_PATH_DIR std::string("../res/")
+
 
 class Shader {
 public:
@@ -10,6 +12,10 @@ public:
     Shader(const std::string& filePath);
 
     void applyShader();
+
+    unsigned int getID() const;
+
+    const std::string& getPath(); 
 
     ~Shader();
 
@@ -28,7 +34,7 @@ private:
 
     unsigned int shaderID;
 
-
+    const std::string shaderPath;
 
 };
 

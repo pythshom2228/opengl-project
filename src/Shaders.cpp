@@ -1,6 +1,6 @@
 #include "include/Shaders.h"
 
-Shader::Shader(const std::string& filePath) {
+Shader::Shader(const std::string& filePath) : shaderPath(filePath) {
     source = parseShader(filePath);
     shaderID = CreateShader(source.VertexSource,source.FragmentSource);
 }
@@ -11,6 +11,14 @@ Shader::~Shader() {
 
 void Shader::applyShader() {
     glUseProgram(shaderID);
+}
+
+unsigned int Shader::getID() const {
+    return shaderID;
+}
+
+const std::string& Shader::getPath() {
+    return shaderPath;
 }
 
 Shader::ShaderProgramSource Shader::parseShader(const std::string& filePath) {
