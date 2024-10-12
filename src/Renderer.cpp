@@ -1,5 +1,4 @@
 #include "include/Renderer.h"
-#include <algorithm>
 #include <stb_image.h>
 
 Renderer::Renderer(std::vector<Cube>* renderObjectsptr) : _renderObjectsptr(renderObjectsptr) {
@@ -15,6 +14,8 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr) : _renderObjectsptr(rend
     #endif
 
     
+    _shaders.emplace("basic",SHADER_PATH_DIR + "basic.shader");
+
     glGenVertexArrays(1, &Cube::buffer.VAO);
     glGenBuffers(1, &Cube::buffer.VBO);
     glGenBuffers(1, &Cube::buffer.EBO);
@@ -55,15 +56,14 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr) : _renderObjectsptr(rend
     }
     stbi_image_free(datatexture);
 
-    glUniform1i(glGetUniformLocation(Cube::shader.getID(), "texture1"),0);
+    glUniform1i(glGetUniformLocation(_shaders["basic"].getID(), "texture1"),1);
 }
-
 
 Renderer::~Renderer() {
     glDeleteVertexArrays(1, &Cube::buffer.VAO);
     glDeleteBuffers(1, &Cube::buffer.VBO);
     glDeleteBuffers(1, &Cube::buffer.EBO);
-    glDeleteProgram(Cube::shader.getID());
+    glDeleteProgram(_shaders["basic"].getID());
     glDeleteTextures(1,&Cube::textureID);
 
 }
@@ -72,15 +72,31 @@ void Renderer::render() {
     glClearColor(1.0f,1.0f,1.0f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D,Cube::textureID);
+    glUseProgram(_shaders["basic"].getID());
+    
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
+
+
+    glm::mat4 projection;
+    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"projection"),1,GL_FALSE,glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"view"),1,GL_FALSE,glm::value_ptr(view));
+
+
+    glBindVertexArray(Cube::buffer.VAO);
     for(auto& cube : *_renderObjectsptr) {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D,cube.textureID);
-        glUseProgram(cube.shader.getID());
-        glUniformMatrix4fv(glGetUniformLocation(cube.shader.getID(),"rotation"),1,GL_FALSE,0);
-        glUniform3f(glGetUniformLocation(cube.shader.getID(),"position"),cube.position.x,cube.position.y,cube.position.z);
+        glm::mat4 model {1.0f};
+        model = glm::translate(model,cube.position);
+        model = glm::scale(model,glm::vec3(0.5,0.5,0.5));
+        
+        glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"rotation"),1,GL_FALSE,glm::value_ptr(cube.rotation));
 
 
-        glBindVertexArray(cube.buffer.VAO);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     }
 }

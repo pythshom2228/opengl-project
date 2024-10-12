@@ -1,22 +1,33 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.28)
 
 if(${CMAKE_GENERATOR} MATCHES "MinGW Makefiles")
     set(VCPKG_TARGET_TRIPLET "x64-mingw-static" CACHE STRING "target triplet" FORCE)
 endif()
 
-set(PROJECT_NAME app)
+message("current triplet is ${VCPKG_TARGET_TRIPLET}")
+
+set(PROJECT_NAME minecraft)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 
 set(CMAKE_CXX_STANDARD 20) 
+
+
 
 set( LOCAL_PATH "${CMAKE_BINARY_DIR}/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${LOCAL_PATH}/bin")
 set( RESOURCES_DIR "${LOCAL_PATH}")
 file(COPY "res" DESTINATION ${RESOURCES_DIR})
 
-set(SOURCE "src/*.cpp")
-add_executable(${PROJECT_NAME} ${SOURCE})
+set(SOURCE "src/main.cpp")
+add_executable(${PROJECT_NAME} 
+    ${SOURCE}
+    "src/Game.cpp"
+    "src/Renderer.cpp"
+    "src/Cube.cpp"
+    "src/Shaders.cpp"
+    "src/Camera.cpp"
+    )
 
 find_package(SFML 2.6.1 COMPONENTS window REQUIRED)
 target_link_libraries(${PROJECT_NAME} sfml-window)

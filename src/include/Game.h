@@ -19,11 +19,10 @@ public:
 
 private:
 
-    std::unique_ptr<sf::Window> _window;
+    std::shared_ptr<sf::Window> _window;
 
     sf::ContextSettings _settings;
-
     std::vector<Cube> _renderObjects;
 
-    Renderer _renderer = &_renderObjects;
+    std::unique_ptr<Renderer> _renderer;
 };

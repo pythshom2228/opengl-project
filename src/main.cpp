@@ -1,9 +1,10 @@
 #define _DEBUG
-#include "Game.h"
+#include "include/Game.h"
 
 
 
 int main() {
+    
     Game minecraft;
 
     minecraft.run();

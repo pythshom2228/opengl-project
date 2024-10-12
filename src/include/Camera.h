@@ -5,9 +5,9 @@
 class Camera {
 public:
 
-    Camera();
+    Camera() = default;
 
-    ~Camera();
+    ~Camera() = default;
 
 private:
     glm::vec3 cameraPos = glm::vec3(0.0f,0.0f,0.0f);

@@ -9,9 +9,6 @@ Shader::~Shader() {
     glDeleteProgram(shaderID);
 }
 
-void Shader::applyShader() {
-    glUseProgram(shaderID);
-}
 
 unsigned int Shader::getID() const {
     return shaderID;

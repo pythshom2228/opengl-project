@@ -4,8 +4,8 @@
 #include "Shaders.h"
 
 
-struct Cube {
 
+struct Cube {
 
     static struct {
         unsigned int VAO;
@@ -15,12 +15,8 @@ struct Cube {
 
     static unsigned int textureID;
 
-
-    glm::vec3 position = glm::vec3(0.0f,0.0f,0.0f);
-
-    
-
-    static const Shader shader;
+    glm::vec3 position;
+    glm::mat4 rotation{1.0f};
 
     static const std::array<float,120> vertexes;
     static const std::array<unsigned int,36> indices;

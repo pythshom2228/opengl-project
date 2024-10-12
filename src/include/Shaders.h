@@ -3,15 +3,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#define SHADER_PATH_DIR std::string("../res/")
+#define SHADER_PATH_DIR std::string("../res/shaders/")
 
 
 class Shader {
 public:
-
+    Shader() = default;
     Shader(const std::string& filePath);
-
-    void applyShader();
 
     unsigned int getID() const;
 
