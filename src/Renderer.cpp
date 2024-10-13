@@ -1,7 +1,9 @@
 #include "include/Renderer.h"
 #include <stb_image.h>
 
-Renderer::Renderer(std::vector<Cube>* renderObjectsptr) : _renderObjectsptr(renderObjectsptr) {
+Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
+ : _renderObjectsptr(renderObjectsptr), _cameraptr(cameraptr) {
+
     glEnable(GL_DEPTH_TEST);
 
     glewExperimental = GL_TRUE;
@@ -77,27 +79,23 @@ void Renderer::render() {
     glBindTexture(GL_TEXTURE_2D,Cube::textureID);
     glUseProgram(_shaders["basic"].getID());
     
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
+    _cameraptr->projection = 0;
+    _cameraptr->view =  glm::lookAt(_cameraptr->cameraPos, _cameraptr->cameraPos + _cameraptr->cameraFront, _cameraptr->cameraUp), 
+    _cameraptr->projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-
-    glm::mat4 projection;
-    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"projection"),1,GL_FALSE,glm::value_ptr(projection));
-    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"view"),1,GL_FALSE,glm::value_ptr(view));
-
+    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"projection"),1,GL_FALSE,glm::value_ptr(_cameraptr->projection));
+    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"view"),1,GL_FALSE,glm::value_ptr(_cameraptr->view));
 
     glBindVertexArray(Cube::buffer.VAO);
     for(auto& cube : *_renderObjectsptr) {
-        glm::mat4 model {1.0f};
-        model = glm::translate(model,cube.position);
-        model = glm::scale(model,glm::vec3(0.5,0.5,0.5));
+        _cameraptr->model = {1.0};
+        _cameraptr->model = glm::translate(_cameraptr->model,cube.position);
+        //_cameraptr->model = glm::scale(_cameraptr->model,glm::vec3(0.5,0.5,0.5));
         
-        glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"rotation"),1,GL_FALSE,glm::value_ptr(cube.rotation));
 
 
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, Cube::indices.size(), GL_UNSIGNED_INT, 0);
     }
 }
-

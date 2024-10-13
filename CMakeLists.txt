@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME}
     "src/Cube.cpp"
     "src/Shaders.cpp"
     "src/Camera.cpp"
+    "src/Player.cpp"
     )
 
 find_package(SFML 2.6.1 COMPONENTS window REQUIRED)

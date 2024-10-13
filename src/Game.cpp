@@ -15,22 +15,29 @@ Game::Game() {
         sf::Style::Default,
         this->_settings
     );
-    _window->setFramerateLimit(60);
-    _renderer = std::make_unique<Renderer>(&_renderObjects);
-
+    _window->setFramerateLimit(120);
+    _player = std::make_unique<Player>();
+    _renderer = std::make_unique<Renderer>(&_renderObjects, &(_player->camera));
 }
 
 void Game::run() {
     bool isRunning = true;
-    _renderObjects = {Cube{},Cube{.position=glm::vec3(0.5,0,0)},Cube{.position=glm::vec3(1,0,0)}};
+    _renderObjects = {
+        Cube{.position=glm::vec3(0,0,-10)},
+        // Cube{.position=glm::vec3(0,0,-11)},
+        // Cube{.position=glm::vec3(0,0,-12)},
+        // Cube{.position=glm::vec3(0,0,-13)},
+        // Cube{.position=glm::vec3(0,0,-14)},
+        // Cube{.position=glm::vec3(0,0,-15)}
+    };
     int fps = 1;
     int k = 1;
     sf::Clock clock;
     float velocity = 5.0f;
+
+    sf::Event event;   
+
     while(isRunning) {
-        sf::Event event;   
-        sf::Keyboard keyboard;
-        sf::Mouse mouse;
          while (_window->pollEvent(event)) {
             if (event.type == sf::Event::Closed)
             {
@@ -42,38 +49,10 @@ void Game::run() {
                 glViewport(0, 0, event.size.width, event.size.height);
             }
         }
-            velocity = 5.0f;
-            if(keyboard.isKeyPressed(sf::Keyboard::Space)) {
-                velocity = 10.f;
-            }
-        for(auto& cube : _renderObjects) {
 
-            if(keyboard.isKeyPressed(sf::Keyboard::W)) {
-                cube.position.y += velocity/k;
-            }
-            if(keyboard.isKeyPressed(sf::Keyboard::S)) {
-                cube.position.y -= velocity/k;
-            }
-            
-            if(keyboard.isKeyPressed(sf::Keyboard::A)) {
-                cube.position.x -= velocity/k;
-            }
-
-            if(keyboard.isKeyPressed(sf::Keyboard::D)) {
-                cube.position.x += velocity/k;
-            }
-            if(keyboard.isKeyPressed(sf::Keyboard::R)) {
-                cube.position.z -= velocity/k;
-            }
-
-            if(keyboard.isKeyPressed(sf::Keyboard::T)) {
-                cube.position.z +=velocity/k;
-            }
-            if(keyboard.isKeyPressed(sf::Keyboard::C)) {
-               cube.rotation = glm::rotate(_renderObjects[0].rotation,glm::radians(120.0f/k),glm::vec3(1.0f,1.0f,1.0f));
-            }
-        }
+        _player->processInput();
         _renderer->render();
+
         fps += 1;
 
         _window->display();

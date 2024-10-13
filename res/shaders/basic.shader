@@ -6,13 +6,14 @@ layout (location = 1) in vec2 aTexCoord;
 out vec2 TexCoord;
 
 uniform mat4 rotation;
-uniform vec3 position;
+uniform mat4 model;
+uniform mat4 projection;
+unifrom mat4 view;
 
 void main() {
-    gl_Position = rotation * (vec4(aPos,1.0)) + vec4(position,1.0);
+    gl_Position = projection * view * model * rotation * (vec4(aPos,1.0));
     TexCoord = aTexCoord;
 }
-
 #shader fragment
 #version 400 core
 out vec4 Texture;

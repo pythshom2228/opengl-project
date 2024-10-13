@@ -4,9 +4,10 @@
 #include <SFML/Window/Event.hpp>
 #include <memory>
 #include "Renderer.h"
+#include "Player.h"
 
 #define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_HEIGHT 600`
 
 class Game {
 public:
@@ -23,6 +24,6 @@ private:
 
     sf::ContextSettings _settings;
     std::vector<Cube> _renderObjects;
-
+    std::unique_ptr<Player> _player;
     std::unique_ptr<Renderer> _renderer;
 };
