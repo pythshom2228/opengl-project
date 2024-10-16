@@ -8,7 +8,7 @@ out vec2 TexCoord;
 uniform mat4 rotation;
 uniform mat4 model;
 uniform mat4 projection;
-unifrom mat4 view;
+uniform mat4 view;
 
 void main() {
     gl_Position = projection * view * model * rotation * (vec4(aPos,1.0));

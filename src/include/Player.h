@@ -1,3 +1,4 @@
+#include <SFML/Window/Window.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include "Camera.h"
@@ -11,14 +12,20 @@ public:
 
     void processInput();
 
+    void handleMouseMoves(const sf::Window& window);
+
 
     Camera camera;
 
     glm::vec3 position  = glm::vec3(0.0f,0.0f,0.0f);
-
+    float sensitivity = 0.1f;
     unsigned int hp;
 
 private:
-    sf::Keyboard _keyboard;
+    bool firstMouse = 1;
+    float lastX;
+    float lastY;
+
     sf::Mouse _mouse;
+    sf::Keyboard _keyboard;
 };

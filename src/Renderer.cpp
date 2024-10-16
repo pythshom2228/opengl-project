@@ -43,7 +43,7 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_ANISOTROPY_EXT,8);
     int width,height,nrChannels;
     unsigned char* datatexture = stbi_load("../res/textures/dirt.jpg",&width,&height,&nrChannels,0);
 
@@ -81,7 +81,7 @@ void Renderer::render() {
     
     _cameraptr->projection = 0;
     _cameraptr->view =  glm::lookAt(_cameraptr->cameraPos, _cameraptr->cameraPos + _cameraptr->cameraFront, _cameraptr->cameraUp), 
-    _cameraptr->projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    _cameraptr->projection = glm::perspective(glm::radians(_cameraptr->zoom), 800.0f / 600.0f, 0.1f, 1000.0f);
 
     glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"projection"),1,GL_FALSE,glm::value_ptr(_cameraptr->projection));
     glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"view"),1,GL_FALSE,glm::value_ptr(_cameraptr->view));
@@ -90,7 +90,6 @@ void Renderer::render() {
     for(auto& cube : *_renderObjectsptr) {
         _cameraptr->model = {1.0};
         _cameraptr->model = glm::translate(_cameraptr->model,cube.position);
-        //_cameraptr->model = glm::scale(_cameraptr->model,glm::vec3(0.5,0.5,0.5));
         
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"rotation"),1,GL_FALSE,glm::value_ptr(cube.rotation));
