@@ -2,7 +2,10 @@
 #include <iostream>
 
 Player::Player() : hp(100) {
-    
+    _mouse.xpos = _mouse.getPosition().x;
+    _mouse.ypos = _mouse.getPosition().y;
+    _mouse.lastX = _mouse.xpos;
+    _mouse.lastY = _mouse.ypos;
 }
 
 void Player::processInput() {
@@ -36,40 +39,31 @@ void Player::processInput() {
 }
 
 void Player::handleMouseMoves(const sf::Window& window) {
-    //if(_mouse.isButtonPressed(_mouse.Left))
-    //    _mouse.setPosition(window.getPosition() + sf::Vector2i(window.getSize().x/2,window.getSize().y/2));
-    float xpos = _mouse.getPosition().x, ypos = _mouse.getPosition().y;
+    _mouse.xpos = _mouse.getPosition().x;
+    _mouse.ypos = _mouse.getPosition().y;
 
-
-    if(camera.firstMouse) {
-        camera.lastX = xpos/2;
-        camera.lastY = ypos/2;
-        camera.firstMouse = false;
-    }
-
-
-    float xoffset = xpos - camera.lastX;
-    float yoffset = camera.lastY - ypos;
-    camera.lastX = xpos;
-    camera.lastY = ypos;
+    _mouse.xoffset = _mouse.xpos - _mouse.lastX;
+    _mouse.yoffset = _mouse.lastY - _mouse.ypos;
 
     
+    std::cout << _mouse.xoffset << " " << _mouse.yoffset << "\n";
+    _mouse.xoffset *= sensitivity;
+    _mouse.yoffset *= sensitivity;
 
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    camera.yaw += xoffset;
-    camera.pitch += yoffset;
+    camera.yaw += _mouse.xoffset;
+    camera.pitch += _mouse.yoffset;
 
     if(camera.pitch > 89.0f)
         camera.pitch =  89.0f;
     if(camera.pitch < -89.0f)
         camera.pitch = -89.0f;
 
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
-    direction.y = sin(glm::radians(camera.pitch));
-    direction.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
-    camera.cameraFront = glm::normalize(direction);
+    camera.direction.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+    camera.direction.y = sin(glm::radians(camera.pitch));
+    camera.direction.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
+    camera.cameraFront = glm::normalize(camera.direction);
 
+    _mouse.setPosition(window.getPosition() + sf::Vector2i(window.getSize().x/2,window.getSize().y/2));
+    _mouse.lastX = _mouse.getPosition().x;
+    _mouse.lastY = _mouse.getPosition().y;
 }

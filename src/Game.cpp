@@ -17,7 +17,7 @@ Game::Game() {
     );
     _window->setFramerateLimit(120);
     _window->setMouseCursorGrabbed(true);
-    _window->setMouseCursorVisible(true);
+    _window->setMouseCursorVisible(false);
 
     _player = std::make_unique<Player>();
 
@@ -26,43 +26,13 @@ Game::Game() {
 
 void Game::run() {
     bool isRunning = true;
-    _renderObjects = {
-        Cube{.position=glm::vec3(0,0,-10)},
-        Cube{.position=glm::vec3(0,0,-11)},
-        Cube{.position=glm::vec3(0,0,-12)},
-        Cube{.position=glm::vec3(0,0,-13)},
-        Cube{.position=glm::vec3(0,0,-14)},
-        Cube{.position=glm::vec3(0,0,-15)},
-        Cube{.position=glm::vec3(1,0,-10)},
-        Cube{.position=glm::vec3(1,0,-11)},
-        Cube{.position=glm::vec3(1,0,-12)},
-        Cube{.position=glm::vec3(1,0,-13)},
-        Cube{.position=glm::vec3(1,0,-14)},
-        Cube{.position=glm::vec3(1,0,-15)},
-        Cube{.position=glm::vec3(2,0,-10)},
-        Cube{.position=glm::vec3(2,0,-11)},
-        Cube{.position=glm::vec3(2,0,-12)},
-        Cube{.position=glm::vec3(2,0,-13)},
-        Cube{.position=glm::vec3(2,0,-14)},
-        Cube{.position=glm::vec3(2,0,-15)},
-        Cube{.position=glm::vec3(0,1,-10)},
-        Cube{.position=glm::vec3(0,1,-11)},
-        Cube{.position=glm::vec3(0,1,-12)},
-        Cube{.position=glm::vec3(0,1,-13)},
-        Cube{.position=glm::vec3(0,1,-14)},
-        Cube{.position=glm::vec3(0,1,-15)},
-        Cube{.position=glm::vec3(1,1,-10)},
-        Cube{.position=glm::vec3(1,1,-11)},
-        Cube{.position=glm::vec3(1,1,-12)},
-        Cube{.position=glm::vec3(1,1,-13)},
-        Cube{.position=glm::vec3(1,1,-14)},
-
-    };
+    _renderObjects.push_back(Cube{.position=glm::vec3(0,0,-10)});
     int fps = 1;
     int k = 1;
     sf::Clock clock;
     float velocity = 5.0f;
     sf::Event event;
+    sf::Mouse mouse;
     while(isRunning) {
 
          while (_window->pollEvent(event)) {
@@ -77,8 +47,12 @@ void Game::run() {
             }
         }
         _window->setActive(true);
-        
-        
+    
+        if(mouse.isButtonPressed(sf::Mouse::Button::Left) && clock.getElapsedTime().asSeconds() >= 1) {
+            glm::vec3 front = _player->camera.cameraFront;
+            _renderObjects.push_back(Cube{.position=_player->position+(glm::vec3(front.x*2,front.y,front.z*2))});
+            clock.restart();
+        }
 
         
         _player->handleMouseMoves(*_window);
@@ -87,15 +61,16 @@ void Game::run() {
 
         fps += 1;
 
+        _window->setActive(false);
         _window->display();
 
-        if(clock.getElapsedTime().asMilliseconds() > 999) {
-            //std::cout << k << "\n";
-            k = fps;
-            fps = 0;
+        // if(clock.getElapsedTime().asMilliseconds() > 999) {
+        //     //std::cout << k << "\n";
+        //     k = fps;
+        //     fps = 0;
 
-            clock.restart();
-        }
+        //     clock.restart();
+        // }
     }
     _window->close();
 }

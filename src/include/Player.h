@@ -19,13 +19,16 @@ public:
 
     glm::vec3 position  = glm::vec3(0.0f,0.0f,0.0f);
     float sensitivity = 0.1f;
-    unsigned int hp;
 
 private:
-    bool firstMouse = 1;
-    float lastX;
-    float lastY;
+    float velocity;
+    unsigned int hp;
+    
+    struct Mouse final : sf::Mouse {
+    float xpos, ypos;
+    float lastX, lastY;
+    float xoffset = 0, yoffset = 0;
+    } _mouse;
 
-    sf::Mouse _mouse;
     sf::Keyboard _keyboard;
 };
