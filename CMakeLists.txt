@@ -26,6 +26,7 @@ add_executable(${PROJECT_NAME}
     "src/Renderer.cpp"
     "src/Cube.cpp"
     "src/Shaders.cpp"
+    "src/Texture.cpp"
     "src/Camera.cpp"
     "src/Player.cpp"
     )
