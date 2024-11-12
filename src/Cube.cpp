@@ -1,20 +1,23 @@
 #include "include/Cube.h"
 
+Cube::Cube(const unsigned int& typeID) : _typeID(typeID) {}
+
 decltype(Cube::buffer) Cube::buffer = {};
 
-unsigned int Cube::textureID = 0;
-
+void Cube::setPosition(glm::vec3 pos) {
+    this->_position = pos;
+}
 const std::array<float,120> Cube::vertexes = {
 //      x     y    z      S    T
-     0.5f,  0.5f, -0.5f,  1.0f,1.0f, // 0
-     0.5f, -0.5f, -0.5f,  1.0f,0.0f, // 1
+     0.5f,  0.5f, -0.5f,  -0.5,-0.5, // 0
+     0.5f, -0.5f, -0.5f,  -0.5,0.0f, // 1
     -0.5f, -0.5f, -0.5f,  0.0f,0.0f, // 2
-    -0.5f,  0.5f, -0.5f,  0.0f,1.0f, // 3
+    -0.5f,  0.5f, -0.5f,  0.0f,-0.5, // 3
 
-     0.5f,   0.5f, 0.5f, 1.0f,1.0f,   // 4
-     0.5f,  -0.5f, 0.5f, 1.0f,0.0f,   // 5
+     0.5f,   0.5f, 0.5f, 0.5f,-0.5f,   // 4
+     0.5f,  -0.5f, 0.5f, 0.5f,0.0f,   // 5
     -0.5f,  -0.5f, 0.5f, 0.0f,0.0f,   // 6
-    -0.5f,   0.5f, 0.5f, 0.0f,1.0f,    // 
+    -0.5f,   0.5f, 0.5f, 0.0f,-0.5f,    // 
 
     0.5f,  0.5f, -0.5f, 1.0f,1.0f, // 8
     0.5f, -0.5f, -0.5f, 1.0f,0.0f, // 9

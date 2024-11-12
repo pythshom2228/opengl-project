@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -27,5 +26,6 @@ private:
 
     Camera* _cameraptr;
     std::unordered_map<std::string,Shader> _shaders;
+    std::unordered_map<std::string,Texture> _textures;
     std::vector<Cube>* _renderObjectsptr;
 };

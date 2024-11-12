@@ -1,5 +1,4 @@
 #include "include/Renderer.h"
-#include <stb_image.h>
 
 Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
  : _renderObjectsptr(renderObjectsptr), _cameraptr(cameraptr) {
@@ -14,9 +13,8 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
     #ifdef _DEBUG
         std::cout << glGetString(GL_VERSION) << "\n";
     #endif
-
     
-    _shaders.emplace("basic",SHADER_PATH_DIR + "basic.shader");
+    
 
     glGenVertexArrays(1, &Cube::buffer.VAO);
     glGenBuffers(1, &Cube::buffer.VBO);
@@ -30,35 +28,16 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
     glBufferData(GL_ARRAY_BUFFER, sizeof(Cube::vertexes), Cube::vertexes.data(), GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Cube::indices), Cube::indices.data(), GL_STATIC_DRAW);
 
-
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    glGenTextures(1,&Cube::textureID);
-    glBindTexture(GL_TEXTURE_2D,Cube::textureID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_ANISOTROPY_EXT,8);
-    int width,height,nrChannels;
-    unsigned char* datatexture = stbi_load("../res/textures/dirt.jpg",&width,&height,&nrChannels,0);
-
-    if (datatexture)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, datatexture);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(datatexture);
-
+    _shaders.emplace("basic",SHADER_PATH_DIR + "basic.shader");
+    _textures.emplace("dirt",Texture::DIRT);    
     glUniform1i(glGetUniformLocation(_shaders["basic"].getID(), "texture1"),1);
+
 }
 
 Renderer::~Renderer() {
@@ -66,8 +45,6 @@ Renderer::~Renderer() {
     glDeleteBuffers(1, &Cube::buffer.VBO);
     glDeleteBuffers(1, &Cube::buffer.EBO);
     glDeleteProgram(_shaders["basic"].getID());
-    glDeleteTextures(1,&Cube::textureID);
-
 }
 
 void Renderer::render() {
@@ -76,9 +53,10 @@ void Renderer::render() {
 
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D,Cube::textureID);
-    glUseProgram(_shaders["basic"].getID());
+    glBindTexture(GL_TEXTURE_2D,*Texture::getID());
     
+    glUseProgram(_shaders["basic"].getID());
+
     _cameraptr->projection = 0;
     _cameraptr->view =  glm::lookAt(_cameraptr->cameraPos, _cameraptr->cameraPos + _cameraptr->cameraFront, _cameraptr->cameraUp), 
     _cameraptr->projection = glm::perspective(glm::radians(_cameraptr->zoom), 800.0f / 600.0f, 0.1f, 1000.0f);
@@ -89,7 +67,7 @@ void Renderer::render() {
     glBindVertexArray(Cube::buffer.VAO);
     for(auto& cube : *_renderObjectsptr) {
         _cameraptr->model = {1.0};
-        _cameraptr->model = glm::translate(_cameraptr->model,cube.position);
+        _cameraptr->model = glm::translate(_cameraptr->model,cube.getPosition());
         
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"rotation"),1,GL_FALSE,glm::value_ptr(cube.rotation));

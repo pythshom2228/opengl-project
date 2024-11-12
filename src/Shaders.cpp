@@ -14,7 +14,7 @@ unsigned int Shader::getID() const {
     return shaderID;
 }
 
-const std::string& Shader::getPath() {
+const std::string& Shader::getPath() const {
     return shaderPath;
 }
 

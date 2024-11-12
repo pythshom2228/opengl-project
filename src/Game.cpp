@@ -26,8 +26,10 @@ Game::Game() {
 
 void Game::run() {
     bool isRunning = true;
-    _renderObjects.push_back(Cube{.position=glm::vec3(0,0,-10)});
     int fps = 1;
+    _renderObjects.push_back(Cube{Texture::DIRT});
+    glm::vec3 pos = glm::vec3(0,0,-10);
+    _renderObjects[0].setPosition(pos);
     int k = 1;
     sf::Clock clock;
     float velocity = 5.0f;
@@ -48,29 +50,22 @@ void Game::run() {
         }
         _window->setActive(true);
     
-        if(mouse.isButtonPressed(sf::Mouse::Button::Left) && clock.getElapsedTime().asSeconds() >= 1) {
-            glm::vec3 front = _player->camera.cameraFront;
-            _renderObjects.push_back(Cube{.position=_player->position+(glm::vec3(front.x*2,front.y,front.z*2))});
-            clock.restart();
-        }
-
-        
+                
         _player->handleMouseMoves(*_window);
         _player->processInput();
         _renderer->render();
 
-        fps += 1;
 
         _window->setActive(false);
         _window->display();
+        fps +=1;
+         if(clock.getElapsedTime().asMilliseconds() > 999) {
+             std::cout << k << "\n";
+             k = fps;
+             fps = 0;
 
-        // if(clock.getElapsedTime().asMilliseconds() > 999) {
-        //     //std::cout << k << "\n";
-        //     k = fps;
-        //     fps = 0;
-
-        //     clock.restart();
-        // }
+             clock.restart();
+         }
     }
     _window->close();
 }

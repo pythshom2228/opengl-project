@@ -2,10 +2,24 @@
 #include <glm/glm.hpp>
 #include <array>
 #include "Shaders.h"
-
+#include "Texture.h"
 
 
 struct Cube {
+    Cube(const unsigned int& typeID);
+
+    void setPosition(glm::vec3 pos);
+
+    glm::vec3& getPosition() {
+        return _position;
+    }
+    const unsigned int getTypeID() const;
+
+    
+    static const std::array<float,120> vertexes;
+    static const std::array<unsigned int,36> indices;
+
+
 
     static struct {
         unsigned int VAO;
@@ -13,12 +27,13 @@ struct Cube {
         unsigned int EBO;
     } buffer;
 
-    static unsigned int textureID;
-
-    glm::vec3 position;
     glm::mat4 rotation{1.0f};
+private:
 
-    static const std::array<float,120> vertexes;
-    static const std::array<unsigned int,36> indices;
+
+    glm::vec3 _position;
+    glm::mat4 _textureArea;
+    const unsigned int _typeID;
+    
 
 };

@@ -46,7 +46,6 @@ void Player::handleMouseMoves(const sf::Window& window) {
     _mouse.yoffset = _mouse.lastY - _mouse.ypos;
 
     
-    std::cout << _mouse.xoffset << " " << _mouse.yoffset << "\n";
     _mouse.xoffset *= sensitivity;
     _mouse.yoffset *= sensitivity;
 

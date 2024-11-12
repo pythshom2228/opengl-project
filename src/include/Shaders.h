@@ -5,7 +5,6 @@
 #include <sstream>
 #define SHADER_PATH_DIR std::string("../res/shaders/")
 
-
 class Shader {
 public:
     Shader() = default;
@@ -13,7 +12,7 @@ public:
 
     unsigned int getID() const;
 
-    const std::string& getPath(); 
+    const std::string& getPath() const; 
 
     ~Shader();
 
