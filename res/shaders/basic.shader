@@ -21,6 +21,7 @@ out vec4 Texture;
 in vec2 TexCoord;
 
 uniform sampler2D texture1;
+uniform mat4 TextureMatrix;
 
 
 void main() {
