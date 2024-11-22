@@ -3,4 +3,4 @@ build/
 vcpkg/
 TODO
 tags
-run.sh
+*.sh
