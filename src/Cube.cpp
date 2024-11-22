@@ -16,7 +16,6 @@ const Cube::types& Cube::getTypeID() const {
     return this->_typeID;
 }
 
-
 const std::array<float,120> Cube::vertexes = {
 //      x     y    z      S    T
      0.5f,  0.5f, -0.5f,  -0.5f,-0.5f, // 0
