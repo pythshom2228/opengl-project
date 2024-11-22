@@ -2,18 +2,22 @@
 #include <glm/glm.hpp>
 #include <array>
 #include "Shaders.h"
-#include "Texture.h"
 
 
 struct Cube {
-    Cube(const unsigned int& typeID);
+    enum types {
+        DIRT = 1,
+        GRASS = 2,
+        STONE = 3
+    };
+
+    Cube(const types& typeID);
 
     void setPosition(glm::vec3 pos);
 
-    glm::vec3& getPosition() {
-        return _position;
-    }
-    const unsigned int getTypeID() const;
+    glm::vec3& getPosition();
+
+    const types& getTypeID() const;
 
     
     static const std::array<float,120> vertexes;
@@ -33,7 +37,7 @@ private:
 
     glm::vec3 _position;
     glm::mat4 _textureArea;
-    const unsigned int _typeID;
+    const types _typeID;
     
 
 };

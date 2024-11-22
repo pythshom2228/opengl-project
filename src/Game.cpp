@@ -25,16 +25,20 @@ Game::Game() {
 }
 
 void Game::run() {
+    _player->setMousePos(_window->getPosition() + sf::Vector2i(_window->getSize().x/2,_window->getSize().y/2));
+    _window->setActive(1);
     bool isRunning = true;
     int fps = 1;
-    _renderObjects.push_back(Cube{Texture::DIRT});
-    glm::vec3 pos = glm::vec3(0,0,-10);
-    _renderObjects[0].setPosition(pos);
+    for(double i = 0;i < 128;i++) {
+        for(double j = 0;j<128;j++) {
+            _renderObjects.emplace_back(Cube::GRASS);        
+            _renderObjects.back().setPosition(glm::vec3(i,-5,-j+10));
+        }
+    }
     int k = 1;
     sf::Clock clock;
-    float velocity = 5.0f;
     sf::Event event;
-    sf::Mouse mouse;
+
     while(isRunning) {
 
          while (_window->pollEvent(event)) {
@@ -48,6 +52,7 @@ void Game::run() {
                 glViewport(0, 0, event.size.width, event.size.height);
             }
         }
+
         _window->setActive(true);
     
                 
@@ -60,7 +65,7 @@ void Game::run() {
         _window->display();
         fps +=1;
          if(clock.getElapsedTime().asMilliseconds() > 999) {
-             std::cout << k << "\n";
+             std::cout << "FPS: " << k << " x: " << _player->position.x << " y: " << _player->position.y << " z: " << _player->position.z << "\n";
              k = fps;
              fps = 0;
 

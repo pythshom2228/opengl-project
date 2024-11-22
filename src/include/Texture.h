@@ -4,31 +4,21 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
+#include "Cube.h"
 
 class Texture {
 public:
-    enum types {
-        DIRT = 1,
-        GRASS = 2,
-        STONE = 3
-    };
 
     Texture() = default;
 
-    Texture(const types& textureType);
+    Texture(const Cube::types& textureType);
 
     ~Texture();
 
-    const std::string& getPath() const;
+    std::unique_ptr<unsigned int>& getID();
 
-    static std::unique_ptr<unsigned int>& getID();
+    static std::unordered_map<Cube::types,const std::string> textureMap;
 
 private:
-    static const std::unordered_map<unsigned int,glm::mat4&> textureMap;
-
-
-    void selectTexture(const unsigned int& textureType);
-    int b = 1;
-    static std::string _texturePath;
-    static std::unique_ptr<unsigned int> _textureID;
+    std::unique_ptr<unsigned int> _textureID;
 };

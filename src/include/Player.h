@@ -3,6 +3,7 @@
 #include <SFML/Window/Mouse.hpp>
 #include "Camera.h"
 #include <glm/glm.hpp>
+#include <memory>
 
 class Player {
 public:
@@ -14,14 +15,17 @@ public:
 
     void handleMouseMoves(const sf::Window& window);
 
+    void setMousePos(sf::Vector2i position);
 
     Camera camera;
 
     glm::vec3 position  = glm::vec3(0.0f,0.0f,0.0f);
-    float sensitivity = 0.1f;
 
+    float sensitivity = 0.1f;
 private:
-    float velocity;
+    void fpsCount();
+
+    float velocity = 0.5;
     unsigned int hp;
     
     struct Mouse final : sf::Mouse {

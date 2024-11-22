@@ -8,7 +8,7 @@
 
 #include <GL/glew.h>
 
-#include "Cube.h"
+#include "Texture.h"
 #include "Shaders.h"
 #include "Camera.h"
 
@@ -26,6 +26,6 @@ private:
 
     Camera* _cameraptr;
     std::unordered_map<std::string,Shader> _shaders;
-    std::unordered_map<std::string,Texture> _textures;
+    std::unordered_map<Cube::types,Texture> _textures;
     std::vector<Cube>* _renderObjectsptr;
 };

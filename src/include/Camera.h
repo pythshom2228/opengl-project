@@ -22,5 +22,4 @@ struct Camera {
     glm::mat4 projection;
     glm::mat4 view;
     glm::mat4 model = {1.0};
-    float cameraSpeed = 0.05f;
 };

@@ -10,32 +10,36 @@ Player::Player() : hp(100) {
 
 void Player::processInput() {
     if(_keyboard.isKeyPressed(sf::Keyboard::W)) {
-        position += camera.cameraSpeed * camera.cameraFront;
+        position += velocity * camera.cameraFront;
         camera.cameraPos = position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::S)) {
-        position -= camera.cameraSpeed * camera.cameraFront;
+        position -= velocity * camera.cameraFront;
         camera.cameraPos = position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::A)) {
-        position -= glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * camera.cameraSpeed;
+        position -= glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * velocity;
         camera.cameraPos = position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::D)) {
-        position += glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * camera.cameraSpeed;
+        position += glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * velocity;
         camera.cameraPos = position;    
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::Space)) {
-        position += camera.cameraSpeed * camera.cameraUp;
+        position += velocity * camera.cameraUp;
         camera.cameraPos = position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::LShift)){
-        position -= camera.cameraSpeed * camera.cameraUp;
+        position -= velocity * camera.cameraUp;
         camera.cameraPos = position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::C)) {
 
     }
+}
+
+void Player::setMousePos(sf::Vector2i position) {
+    _mouse.setPosition(position);
 }
 
 void Player::handleMouseMoves(const sf::Window& window) {

@@ -10,12 +10,9 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
     if(GLEW_OK != glewInit())
         std::cout << "Failed to initialize GLEW" << "\n";
     
-    #ifdef _DEBUG
-        std::cout << glGetString(GL_VERSION) << "\n";
-    #endif
+    std::cout << glGetString(GL_VERSION) << "\n";
     
     
-
     glGenVertexArrays(1, &Cube::buffer.VAO);
     glGenBuffers(1, &Cube::buffer.VBO);
     glGenBuffers(1, &Cube::buffer.EBO);
@@ -35,16 +32,14 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
     glEnableVertexAttribArray(1);
 
     _shaders.emplace("basic",SHADER_PATH_DIR + "basic.shader");
-    _textures.emplace("dirt",Texture::DIRT);    
+    for(auto& cubeType: Texture::textureMap) _textures.emplace(cubeType.first,cubeType.first);
     glUniform1i(glGetUniformLocation(_shaders["basic"].getID(), "texture1"),1);
-
 }
 
 Renderer::~Renderer() {
     glDeleteVertexArrays(1, &Cube::buffer.VAO);
     glDeleteBuffers(1, &Cube::buffer.VBO);
     glDeleteBuffers(1, &Cube::buffer.EBO);
-    glDeleteProgram(_shaders["basic"].getID());
 }
 
 void Renderer::render() {
@@ -53,7 +48,6 @@ void Renderer::render() {
 
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D,*Texture::getID());
     
     glUseProgram(_shaders["basic"].getID());
 
@@ -72,6 +66,7 @@ void Renderer::render() {
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"rotation"),1,GL_FALSE,glm::value_ptr(cube.rotation));
 
+        glBindTexture(GL_TEXTURE_2D,*_textures[cube.getTypeID()].getID());
 
         glDrawElements(GL_TRIANGLES, Cube::indices.size(), GL_UNSIGNED_INT, 0);
     }
