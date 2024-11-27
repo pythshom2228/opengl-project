@@ -12,7 +12,6 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
     
     std::cout << glGetString(GL_VERSION) << "\n";
     
-    
     glGenVertexArrays(1, &Cube::buffer.VAO);
     glGenBuffers(1, &Cube::buffer.VBO);
     glGenBuffers(1, &Cube::buffer.EBO);
@@ -66,8 +65,8 @@ void Renderer::render() {
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"rotation"),1,GL_FALSE,glm::value_ptr(cube.rotation));
 
+        glBindVertexArray(cube.buffer.VAO);
         glBindTexture(GL_TEXTURE_2D,*_textures[cube.getTypeID()].getID());
-
         glDrawElements(GL_TRIANGLES, Cube::indices.size(), GL_UNSIGNED_INT, 0);
     }
 }

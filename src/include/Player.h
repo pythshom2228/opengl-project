@@ -2,6 +2,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include "Camera.h"
+#include "Time.h"
 #include <glm/glm.hpp>
 #include <memory>
 
@@ -23,9 +24,8 @@ public:
 
     float sensitivity = 0.1f;
 private:
-    void fpsCount();
 
-    float velocity = 0.5;
+    float velocity = 1;
     unsigned int hp;
     
     struct Mouse final : sf::Mouse {
