@@ -28,6 +28,7 @@ add_executable(${PROJECT_NAME}
     "src/Shaders.cpp"
     "src/Texture.cpp"
     "src/Camera.cpp"
+    "src/Time.cpp"
     "src/Player.cpp"
     )
 
