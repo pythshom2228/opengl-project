@@ -14,13 +14,7 @@ Texture::Texture(const Cube::types& textureType) {
 
 
     if (datatexture){
-        // glTexImage3D(GL_TEXTURE_2D,0,GL_RGB,width,height,1,0,GL_RGB,GL_UNSIGNED_BYTE,datatexture); 
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,datatexture);
-        //glTexImage3D(GL_TEXTURE_2D,0,GL_RGBA8,width,height,2,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
-        
-       // glTexStorage3D(GL_TEXTURE_2D, 1,GL_RGBA8,width,height,1);
-        
-        // glTexSubImage(GL_TEXTURE_2D,0, 0,0,1,width/2.height/,
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else std::cout << "Failed to load texture" << "\n";
@@ -48,5 +42,6 @@ std::unique_ptr<unsigned int>& Texture::getID() {
 
 
 std::unordered_map<Cube::types,const std::string> Texture::textureMap = {
+    {Cube::NONE, "../res/textures/border-line.png"},
     {Cube::GRASS,"../res/textures/grass.jpg"}
 };
