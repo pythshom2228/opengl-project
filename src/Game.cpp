@@ -18,7 +18,6 @@ Game::Game() {
     _window->setFramerateLimit(120);
     _window->setMouseCursorGrabbed(true);
     _window->setMouseCursorVisible(false);
-
     _player = std::make_unique<Player>();
 
     _renderer = std::make_unique<Renderer>(&_renderObjects, &(_player->camera));
@@ -31,14 +30,16 @@ void Game::run() {
     _window->setActive(1);
     bool isRunning = true;
     int fps = 1;
-    for(double i = 0;i < 16;i++) {
-        for(double j = 0;j<16;j++) {
+    for(double i = 0;i < 128;i++) {
+        for(double j = 0;j<128;j++) {
             _renderObjects.emplace_back(Cube::GRASS);        
             _renderObjects.back().setPosition(glm::vec3(i,-5,-j+10));
         }
     }
+    sf::Clock clock;
     sf::Event event;
-
+    _player->setPosition(glm::vec3(64,2,-64));
+    
     while(isRunning) {
 
          while (_window->pollEvent(event)) {
@@ -57,7 +58,7 @@ void Game::run() {
         
         Time::setDeltaTime();
 
-                
+
         _player->handleMouseMoves(*_window);
         _player->processInput();
         _renderer->render();
@@ -65,6 +66,15 @@ void Game::run() {
 
         _window->setActive(false);
         _window->display();
+
+        fps += 1;
+        if(clock.getElapsedTime().asMilliseconds() > 999) {
+            std::cout << "FPS: " << fps << "\n";
+            fps=0;
+
+            clock.restart();
+        }
+        
     }
 
     _window->close();
