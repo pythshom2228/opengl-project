@@ -12,27 +12,72 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
     
     std::cout << glGetString(GL_VERSION) << "\n";
     
-    glGenVertexArrays(1, &Cube::buffer.VAO);
-    glGenBuffers(1, &Cube::buffer.VBO);
-    glGenBuffers(1, &Cube::buffer.EBO);
+    {
+        const std::int8_t cubePosCoords = Cube::buffer.positionCoordsNum;
+        const std::int8_t cubeTextureCoords = Cube::buffer.textureCoordsNum;
+        const std::int8_t stride = cubePosCoords + cubeTextureCoords;
 
-    glBindVertexArray(Cube::buffer.VAO);
+        glGenVertexArrays(1, &Cube::buffer.VAO);
+        glGenBuffers(1, &Cube::buffer.VBO);
+        glGenBuffers(1, &Cube::buffer.EBO);
 
-    glBindBuffer(GL_ARRAY_BUFFER,Cube::buffer.VBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Cube::buffer.EBO);
+        glBindVertexArray(Cube::buffer.VAO);
+        glBindBuffer(GL_ARRAY_BUFFER,Cube::buffer.VBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Cube::buffer.EBO);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Cube::vertexes), Cube::vertexes.data(), GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Cube::indices), Cube::indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Cube::vertexes), Cube::vertexes.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Cube::indices), Cube::indices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+        glVertexAttribPointer(0, cubePosCoords, GL_FLOAT, GL_FALSE, stride * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        
+        glVertexAttribPointer(1, cubeTextureCoords, GL_FLOAT, GL_FALSE, stride * sizeof(float), (void*)(cubePosCoords * sizeof(float)));
+        glEnableVertexAttribArray(1);
+        
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+    }
+
+    {
+        const std::int8_t crossPosCoords = Cross::buffer.positionCoordsNum;
+
+        glGenVertexArrays(1,&Cross::buffer.VAO);
+        glGenBuffers(1,&Cross::buffer.VBO);
+        glGenBuffers(1,&Cross::buffer.EBO);
+        
+        glBindVertexArray(Cross::buffer.VAO);
+        glBindBuffer(GL_ARRAY_BUFFER,Cross::buffer.VBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Cross::buffer.EBO);
+
+
+        glBufferData(GL_ARRAY_BUFFER,sizeof(Cross::vertexes),Cross::vertexes.data(),GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(Cross::indices),Cross::indices.data(),GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0,crossPosCoords,GL_FLOAT,GL_FALSE, crossPosCoords *sizeof(float),(void*)0);
+        glEnableVertexAttribArray(0);
+
+
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+    }
 
     _shaders.emplace("basic",SHADER_PATH_DIR + "basic.shader");
-    for(auto& cubeType: Texture::textureMap) _textures.emplace(cubeType.first,cubeType.first);
-    glUniform1i(glGetUniformLocation(_shaders["basic"].getID(), "texture1"),1);
+    _shaders.emplace("cross", SHADER_PATH_DIR + "cross.shader");
+    glUseProgram(_shaders["basic"].getID());
+    
+    for(auto& [cubeType,path] : Texture::textureMap) 
+    {
+        _textures.emplace(cubeType,cubeType);
+        if(cubeType != Cube::NONE) {
+            glUniform1i(glGetUniformLocation(_shaders["basic"].getID(), "border"),1);
+        }
+        else {
+            glUniform1i(glGetUniformLocation(_shaders["basic"].getID(), "baseTexture"),0);
+        }
+    }
+
 }
 
 Renderer::~Renderer() {
@@ -47,7 +92,6 @@ void Renderer::render() {
 
 
     glActiveTexture(GL_TEXTURE0);
-    
     glUseProgram(_shaders["basic"].getID());
 
     _cameraptr->projection = 0;
@@ -63,10 +107,16 @@ void Renderer::render() {
         _cameraptr->model = glm::translate(_cameraptr->model,cube.getPosition());
         
         glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
-        glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"rotation"),1,GL_FALSE,glm::value_ptr(cube.rotation));
 
         glBindVertexArray(cube.buffer.VAO);
         glBindTexture(GL_TEXTURE_2D,*_textures[cube.getTypeID()].getID());
         glDrawElements(GL_TRIANGLES, Cube::indices.size(), GL_UNSIGNED_INT, 0);
     }
+
+    glUseProgram(_shaders["cross"].getID());
+    glBindVertexArray(Cross::buffer.VAO);
+    glDrawElements(GL_TRIANGLES,Cross::indices.size(),GL_UNSIGNED_INT,0);
+    
 }
+
+Cross Renderer::cursor = {};
