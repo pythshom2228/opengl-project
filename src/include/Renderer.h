@@ -8,6 +8,7 @@
 
 #include <GL/glew.h>
 
+#include "Cross.h"
 #include "Texture.h"
 #include "Shaders.h"
 #include "Camera.h"
@@ -27,5 +28,6 @@ private:
     Camera* _cameraptr;
     std::unordered_map<std::string,Shader> _shaders;
     std::unordered_map<Cube::types,Texture> _textures;
+    static Cross cursor;
     std::vector<Cube>* _renderObjectsptr;
 };

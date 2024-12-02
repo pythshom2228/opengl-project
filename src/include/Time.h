@@ -13,10 +13,10 @@ public:
     static void setDeltaTime();
 
     static float getDeltaTime();
-    
-private:
+     
     static void reset();
-    
+
+private: 
 
     struct TimeImpl {
         float deltaTime = 0.0f;

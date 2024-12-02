@@ -6,9 +6,10 @@
 
 struct Cube {
     enum types {
-        DIRT = 1,
-        GRASS = 2,
-        STONE = 3
+        NONE = 0,
+        DIRT,
+        GRASS,
+        STONE
     };
 
     Cube(const types& typeID);
@@ -29,6 +30,8 @@ struct Cube {
         unsigned int VAO;
         unsigned int VBO;
         unsigned int EBO;
+        const std::int8_t positionCoordsNum = 3;
+        const std::int8_t textureCoordsNum = 2;
     } buffer;
 
     glm::mat4 rotation{1.0f};
@@ -36,7 +39,6 @@ private:
 
 
     glm::vec3 _position;
-    glm::mat4 _textureArea;
     const types _typeID;
     
 

@@ -5,6 +5,8 @@
 #include "Time.h"
 #include <glm/glm.hpp>
 #include <memory>
+#include <vector>
+#include "Cube.h"
 
 class Player {
 public:
@@ -18,12 +20,21 @@ public:
 
     void setMousePos(sf::Vector2i position);
 
+    void setPosition(glm::vec3 position);
+
+    glm::vec3 getPosition();
+
     Camera camera;
 
-    glm::vec3 position  = glm::vec3(0.0f,0.0f,0.0f);
 
     float sensitivity = 0.1f;
+    
+
 private:
+    glm::vec3 _position  = glm::vec3(0.0f,0.0f,0.0f);
+
+    
+    std::size_t _cubeId;
 
     float velocity = 1;
     unsigned int hp;
@@ -33,6 +44,6 @@ private:
     float lastX, lastY;
     float xoffset = 0, yoffset = 0;
     } _mouse;
-
+    
     sf::Keyboard _keyboard;
 };
