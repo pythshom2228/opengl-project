@@ -9,43 +9,42 @@ Player::Player() : hp(100) {
 }
 
 void Player::processInput() {
-    //std::cout << camera.cameraFront.x << " " << camera.cameraFront.y << " " << camera.cameraFront.z << "\n";
     float dvelocity = velocity * Time::getDeltaTime();
     if(_keyboard.isKeyPressed(sf::Keyboard::W)) {
-        position += dvelocity * glm::vec3(
+        _position += dvelocity * glm::vec3(
             camera.cameraFront.x / cos(glm::radians(camera.pitch)),0,camera.cameraFront.z / cos(glm::radians(camera.pitch))
             );
-        camera.cameraPos = position;
+        camera.cameraPos = _position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::S)) {
-        position -= dvelocity * glm::vec3(
+        _position -= dvelocity * glm::vec3(
             camera.cameraFront.x / cos(glm::radians(camera.pitch)),0,camera.cameraFront.z / cos(glm::radians(camera.pitch))
             );
-        camera.cameraPos = position;
+        camera.cameraPos = _position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::A)) {
-        position -= glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * dvelocity;
-        camera.cameraPos = position;
+        _position -= glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * dvelocity;
+        camera.cameraPos = _position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::D)) {
-        position += glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * dvelocity;
-        camera.cameraPos = position;    
+        _position += glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * dvelocity;
+        camera.cameraPos = _position;    
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::Space)) {
-        position += dvelocity * camera.cameraUp;
-        camera.cameraPos = position;
+        _position += dvelocity * camera.cameraUp;
+        camera.cameraPos = _position;
     }
     if(_keyboard.isKeyPressed(sf::Keyboard::LShift)){
-        position -= dvelocity * camera.cameraUp;
-        camera.cameraPos = position;
+        _position -= dvelocity * camera.cameraUp;
+        camera.cameraPos = _position;
     }
-    if(_keyboard.isKeyPressed(sf::Keyboard::C)) {
-
+    if(_mouse.isButtonPressed(Player::Mouse::Left)) {
+        
     }
 }
 
-void Player::setMousePos(sf::Vector2i position) {
-    _mouse.setPosition(position);
+void Player::setMousePos(sf::Vector2i _position) {
+    _mouse.setPosition(_position);
 }
 
 void Player::handleMouseMoves(const sf::Window& window) {
@@ -75,4 +74,13 @@ void Player::handleMouseMoves(const sf::Window& window) {
     _mouse.setPosition(window.getPosition() + sf::Vector2i(window.getSize().x/2,window.getSize().y/2));
     _mouse.lastX = _mouse.getPosition().x;
     _mouse.lastY = _mouse.getPosition().y;
+}
+
+void Player::setPosition(glm::vec3 position) {
+    this->_position = position;
+    this->camera.cameraPos = position;
+}
+
+glm::vec3 Player::getPosition() {
+    return _position;
 }
