@@ -30,6 +30,7 @@ add_executable(${PROJECT_NAME}
     "src/Camera.cpp"
     "src/Time.cpp"
     "src/Player.cpp"
+    "src/Cross.cpp"
     )
 
 find_package(SFML 2.6.1 COMPONENTS window REQUIRED)
@@ -49,5 +50,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${GLM})
 
 find_package(Stb REQUIRED)
 include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
-add_library(stb_image STATIC  "src/stb_image.cpp")
+add_library(stb_image STATIC  "stb_image.cpp")
 target_link_libraries(${PROJECT_NAME} stb_image)
