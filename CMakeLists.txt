@@ -1,17 +1,31 @@
 cmake_minimum_required(VERSION 3.28)
 
-if(${CMAKE_GENERATOR} MATCHES "MinGW Makefiles")
-    set(VCPKG_TARGET_TRIPLET "x64-mingw-static" CACHE STRING "target triplet" FORCE)
+if(NOT DEFINED(${CMAKE_BUILD_TYPE}))
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Debug")
 endif()
 
-message("current triplet is ${VCPKG_TARGET_TRIPLET}")
+if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
+    if(${CMAKE_GENERATOR} MATCHES "MinGW Makefiles")
+        set(ENV{VCPKG_DEFAULT_TRIPLET} "x64-mingw-dynamic") 
+        set(ENV{VCPKG_DEFAULT_HOST_TRIPLET} "x64-mingw-dynamic")
+        set(VCPKG_TARGET_TRIPLET "x64-mingw-dynamic" CACHE STRING "x64-mingw-dynamic") 
+    endif()
+	
+else()
+    if(${CMAKE_GENERATOR} MATCHES "MinGW Makefiles")
+        set(ENV{VCPKG_DEFAULT_TRIPLET} "x64-mingw-static")
+        set(ENV{VCPKG_DEFAULT_HOST_TRIPLET} "x64-mingw-static")
+        set(VCPKG_TARGET_TRIPLET "x64-mingw-static" CACHE STRING "x64-mingw-static")
+    endif()
 
+endif()
+
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 set(PROJECT_NAME minecraft)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 
 set(CMAKE_CXX_STANDARD 20) 
-
 
 
 set( LOCAL_PATH "${CMAKE_BINARY_DIR}/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}")
