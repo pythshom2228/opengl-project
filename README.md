@@ -1,8 +1,9 @@
 # OpenGL + SFML
 This is my study project that using Modern OpenGL
 
+You can build this project in Windows and Linux
 
-This project includes SFML, GLEW, GLM and stb_image
+It includes SFML, GLEW, GLM and stb_image
 
 Also you can view this project as example of usage Modern OpenGL
 
@@ -20,21 +21,19 @@ cd opengl-project
 
 git clone https://github.com/microsoft/vcpkg.git
 
-cd vcpkg
+vcpkg\bootstrap-vcpkg.bat (for Windows)
 
-bootstrap-vcpkg.bat (for Windows)
-
-bootstrap-vcpkg.sh (for Linux)
+vcpkg/bootstrap-vcpkg.sh (for Linux)
 ```
 
 Then use cmake command and don't forget to write your build path and generator:
 ```
-cmake -S . -B YOUR_BUILD_FOLDER_PATH -G"YOUR_GENERATOR" -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+cmake -S . -B YOUR_BUILD_FOLDER_PATH -G"YOUR_GENERATOR"
 ```
 
-Also it's able to specify to put files in debug or release directory
+By default it shall build in Debug mode
 
-Just add at the end of cmake command
+To specify a certain build type add this variable
 ```
 -DCMAKE_BUILD_TYPE=Debug/Release
 ```
