@@ -1,7 +1,17 @@
 #include "include/Cube.h"
 
-Cube::Cube(const types& typeID) : _typeID(typeID) {}
-
+Cube::Cube(const types& typeID) 
+    : _typeID(typeID),
+    _currentRenderSides({
+        {sides::front,buffer.EBO[sides::front]},
+        {sides::back,buffer.EBO[sides::back]},
+        {sides::top,buffer.EBO[sides::top]},
+        {sides::bottom,buffer.EBO[sides::bottom]},
+        {sides::right,buffer.EBO[sides::right]},
+        {sides::left,buffer.EBO[sides::left]}
+    })
+    {}
+    
 decltype(Cube::buffer) Cube::buffer = {};
 
 void Cube::setPosition(glm::vec3 pos) {
@@ -49,22 +59,90 @@ const std::array<float,120> Cube::vertexes = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.5f    // 23
 };
 
-const std::array<unsigned int,36> Cube::indices = {
-    0,1,3,
-    1,2,3,
 
-    4,5,6,
-    4,6,7,
+const decltype(Cube::indices) Cube::indices {
+    {
+        .side = sides::front,
+        .elements = {
+            4,5,6,
+            4,6,7
+        }
+    },
 
-    8,9,11,
-    9,10,11,
+    {
+        .side = sides::back,
+        .elements = {
+            0,1,3,
+            1,2,3
+        }
+    },
 
-    12,13,15,
-    13,14,15,
+    {
+        .side = sides::top,
+        .elements = {
+            16,17,19,
+            17,18,19
+        }
+    },
 
-    16,17,19,
-    17,18,19,
+    {
+        .side = sides::bottom,
+        .elements = {
+            20,21,23,
+            21,22,23
+        }
+    },
 
-    20,21,23,
-    21,22,23
+    {
+        .side = sides::right,
+        .elements = {
+            8,9,11,
+            9,10,11
+        }
+    },
+
+    {
+        .side = sides::left,
+        .elements = {
+            12,13,15,
+            13,14,15
+        }
+    }
 };
+
+
+void Cube::popRenderSide(sides side) {
+    this->_currentRenderSides.erase(side);
+}
+
+void Cube::pushRenderSide(sides side) {
+   
+}
+
+
+std::unordered_map<Cube::sides,unsigned int>& Cube::getCurrentRendrSides() {
+    return this->_currentRenderSides;
+}
+
+//const std::array<const std::array<unsigned int,36>,CUBE_SIDES> Cube::indices = {
+//    {
+//        0,1,3,
+//        1,2,3,
+//
+//        4,5,6,
+//        4,6,7,
+//
+//        8,9,11,
+//        9,10,11,
+//
+//        12,13,15,
+//        13,14,15,
+//
+//        16,17,19,
+//        17,18,19,
+//
+//        20,21,23,
+//        21,22,23
+//    }
+//
+//};
