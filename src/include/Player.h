@@ -36,7 +36,7 @@ private:
     
     std::size_t _cubeId;
 
-    float velocity = 1;
+    float velocity = 0.5;
     unsigned int hp;
     
     struct Mouse final : sf::Mouse {
