@@ -24,6 +24,8 @@ public:
     
 
 private:
+    void generateCubeBuffer();
+    void generateCrossBuffer();
 
     Camera* _cameraptr;
     std::unordered_map<std::string,Shader> _shaders;
