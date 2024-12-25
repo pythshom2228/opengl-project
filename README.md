@@ -30,6 +30,10 @@ Then use cmake command and don't forget to write your build path and generator:
 ```
 cmake -S . -B YOUR_BUILD_FOLDER_PATH -G"YOUR_GENERATOR"
 ```
+If you already have vcpkg then define variable
+```
+-DCMAKE_TOOLCHAIN_FILE=path_to_vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake
+```
 
 By default it shall build in Debug mode
 
