@@ -60,7 +60,7 @@ const std::array<float,120> Cube::vertexes = {
 };
 
 
-const decltype(Cube::indices) Cube::indices {
+const Cube::index_t Cube::indices[] {
     {
         .side = sides::front,
         .elements = {
@@ -120,29 +120,7 @@ void Cube::pushRenderSide(sides side) {
 }
 
 
-std::unordered_map<Cube::sides,unsigned int>& Cube::getCurrentRendrSides() {
+std::unordered_map<Cube::sides,const unsigned int>& Cube::getCurrentRendrSides() {
     return this->_currentRenderSides;
 }
 
-//const std::array<const std::array<unsigned int,36>,CUBE_SIDES> Cube::indices = {
-//    {
-//        0,1,3,
-//        1,2,3,
-//
-//        4,5,6,
-//        4,6,7,
-//
-//        8,9,11,
-//        9,10,11,
-//
-//        12,13,15,
-//        13,14,15,
-//
-//        16,17,19,
-//        17,18,19,
-//
-//        20,21,23,
-//        21,22,23
-//    }
-//
-//};

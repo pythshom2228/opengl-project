@@ -1,16 +1,8 @@
 #include "include/Game.h"
-#include "include/Renderer.h"
-#include "include/Player.h" 
 
 
-struct Game::_Impl {
-    std::vector<Cube> _renderObjects;
-    std::unique_ptr<Player> _player;
-    std::unique_ptr<Renderer>   _renderer;
-};
 
-
-Game::Game() : _pImpl(std::make_unique<_Impl>()) {
+Game::Game() {
     _settings.depthBits = 24;
     _settings.stencilBits = 8;
     _settings.antialiasingLevel = 4;
@@ -27,9 +19,9 @@ Game::Game() : _pImpl(std::make_unique<_Impl>()) {
     _window->setFramerateLimit(120);
     _window->setMouseCursorGrabbed(true);
     _window->setMouseCursorVisible(false);
-    _pImpl->_player = std::make_unique<Player>();
+    _player = std::make_unique<Player>();
 
-    _pImpl->_renderer = std::make_unique<Renderer>(&_pImpl->_renderObjects, &(_pImpl->_player->camera));
+    _renderer = std::make_unique<Renderer>(&_renderObjects, &(_player->camera));
 
     Time::init();  
 }
@@ -37,15 +29,15 @@ Game::Game() : _pImpl(std::make_unique<_Impl>()) {
 Game::~Game() {}
 
 void Game::run() {
-    _pImpl->_player->setMousePos(_window->getPosition() + sf::Vector2i(_window->getSize().x/2,_window->getSize().y/2));
+    _player->setMousePos(_window->getPosition() + sf::Vector2i(_window->getSize().x/2,_window->getSize().y/2));
     _window->setActive(1);
     bool isRunning = true;
     int fps = 1;
-    _pImpl->_renderObjects.emplace_back(Cube::GRASS);
+    _renderObjects.emplace_back(Cube::GRASS);
     sf::Clock clock;
     sf::Event event;
-    _pImpl->_player->setPosition(glm::vec3(-4,2,0));
-    _pImpl->_renderObjects[0].popRenderSide(Cube::top);
+   // _player->setPosition(glm::vec3(-4,2,0));
+    //_renderObjects[0].popRenderSide(Cube::top);
     
     
     while(isRunning) {
@@ -67,9 +59,9 @@ void Game::run() {
         Time::setDeltaTime();
 
 
-        _pImpl->_player->handleMouseMoves(*_window);
-        _pImpl->_player->processInput();
-        _pImpl->_renderer->render();
+        _player->handleMouseMoves(*_window);
+        _player->processInput();
+        _renderer->render();
 
 
         _window->setActive(false);

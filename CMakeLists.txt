@@ -66,5 +66,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${GLM})
 
 find_package(Stb REQUIRED)
 include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
-add_library(stb_image STATIC  "stb_image.cpp")
+add_library(stb_image STATIC  "${CMAKE_SOURCE_DIR}/stb_image.cpp")
 target_link_libraries(${PROJECT_NAME} stb_image)

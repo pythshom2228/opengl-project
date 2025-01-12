@@ -35,14 +35,14 @@ struct Cube {
     
     static const std::array<float,120> vertexes;
 
-    static const struct { 
+    static const struct index_t { 
         sides side;
         const std::array<unsigned int,6> elements;
     } indices[CUBE_SIDES];
 
     //static const std::array<const std::array<unsigned int,36>,CUBE_SIDES> indices; 
 
-    static struct {
+    static struct buffer_t {
         unsigned int VAO;
         unsigned int VBO;
         unsigned int EBO[CUBE_SIDES];
@@ -54,11 +54,11 @@ struct Cube {
 
     void pushRenderSide(sides side);
 
-    std::unordered_map<sides,unsigned int>& getCurrentRendrSides();
+    std::unordered_map<sides,const unsigned int>& getCurrentRendrSides();
 
 private:
 
-    std::unordered_map<sides,unsigned int> _currentRenderSides;
+    std::unordered_map<sides,const unsigned int> _currentRenderSides;
 
     glm::vec3 _position;
     const types _typeID;    
