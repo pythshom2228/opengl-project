@@ -12,7 +12,7 @@ Cube::Cube(const types& typeID)
     })
     {}
     
-decltype(Cube::buffer) Cube::buffer = {};
+Cube::buffer_t Cube::buffer = {};
 
 void Cube::setPosition(glm::vec3 pos) {
     this->_position = pos;
@@ -116,7 +116,9 @@ void Cube::popRenderSide(sides side) {
 }
 
 void Cube::pushRenderSide(sides side) {
-   
+    if(this->_currentRenderSides.count(side)) return;
+
+    this->_currentRenderSides.insert({side,buffer.EBO[side]});
 }
 
 

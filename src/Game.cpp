@@ -33,13 +33,26 @@ void Game::run() {
     _window->setActive(1);
     bool isRunning = true;
     int fps = 1;
+    // for(double i = 0;i < 128;i++) {
+    //     for(double j = 0;j<128;j++) {
+    //         _renderObjects.emplace_back(Cube::GRASS);        
+    //         _renderObjects.back().setPosition(glm::vec3(i,-5,-j+10));
+    //     }
+    // }
+   // for(int i = 0; i < 100;i++)
+   // {
+   //     for(int j = 0; j < 100; j++) {
+   //         _renderObjects.emplace_back(Cube::GRASS);
+   //         _renderObjects.back().setPosition(glm::vec3(i,j,0));
+   //     }
+   // }
+    _renderObjects.emplace_back(Cube::DIRT);
     _renderObjects.emplace_back(Cube::GRASS);
+    _renderObjects.back().setPosition(glm::vec3(1,1,0));
     sf::Clock clock;
     sf::Event event;
-   // _player->setPosition(glm::vec3(-4,2,0));
-    //_renderObjects[0].popRenderSide(Cube::top);
-    
-    
+    _player->setPosition(glm::vec3(-4,2,0));
+
     while(isRunning) {
 
          while (_window->pollEvent(event)) {

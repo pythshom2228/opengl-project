@@ -30,9 +30,6 @@ Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
         }
     }
 
-   // glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"projection"),1,GL_FALSE,glm::value_ptr(_cameraptr->projection));
-    //glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"view"),1,GL_FALSE,glm::value_ptr(_cameraptr->view));
-   // glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
 }
 
 Renderer::~Renderer() {

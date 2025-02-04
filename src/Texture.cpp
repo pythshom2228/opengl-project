@@ -42,6 +42,6 @@ std::unique_ptr<unsigned int>& Texture::getID() {
 
 
 std::unordered_map<Cube::types,const std::string> Texture::textureMap = {
-    {Cube::NONE, "../res/textures/border-line.png"},
+    {Cube::DIRT,"../res/textures/dirt.jpg"},
     {Cube::GRASS,"../res/textures/grass.jpg"}
 };
