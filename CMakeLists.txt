@@ -24,6 +24,10 @@ if(NOT DEFINED(${CMAKE_TOOLCHAIN_FILE}))
 set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 endif()
 
+set(CMAKE_CXX_STANDARD 20)
+
+set(CMAKE_CXX_FLAGS "-O2" CACHE STRING "-O2")
+
 set(PROJECT_NAME minecraft)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
