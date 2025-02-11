@@ -3,7 +3,9 @@
 #include <array>
 #include <utility>
 #include <vector>
+#include <cstdint>
 #include <unordered_map>
+#include "Collider.h"
 #define CUBE_SIDES 6
 
 struct Cube {
@@ -12,7 +14,9 @@ struct Cube {
         NONE = 0,
         DIRT,
         GRASS,
-        STONE
+        COBBLESTONE,
+        PLANKS,
+        WOOD
     };
 
     enum sides {
@@ -40,7 +44,6 @@ struct Cube {
         const std::array<unsigned int,6> elements;
     } indices[CUBE_SIDES];
 
-    //static const std::array<const std::array<unsigned int,36>,CUBE_SIDES> indices; 
 
     static struct buffer_t {
         unsigned int VAO;
@@ -57,8 +60,13 @@ struct Cube {
     std::unordered_map<sides,const unsigned int>& getCurrentRendrSides();
 
 private:
+    static constexpr const std::size_t _cubeMaxCount = 64;
+
+    //Collider _cubeCollider;
 
     std::unordered_map<sides,const unsigned int> _currentRenderSides;
+
+    
 
     glm::vec3 _position;
     const types _typeID;    
