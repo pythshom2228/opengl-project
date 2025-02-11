@@ -51,6 +51,7 @@ add_executable(${PROJECT_NAME}
     "src/Time.cpp"
     "src/Player.cpp"
     "src/Cross.cpp"
+    "src/Collider.cpp"
     )
 
 find_package(SFML 2.6.1 COMPONENTS window REQUIRED)
