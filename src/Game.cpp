@@ -1,5 +1,5 @@
 #include "include/Game.h"
-
+#include <cmath>
 
 
 Game::Game() {
@@ -48,10 +48,11 @@ void Game::run() {
    // }
     _renderObjects.emplace_back(Cube::DIRT);
     _renderObjects.emplace_back(Cube::GRASS);
-    _renderObjects.back().setPosition(glm::vec3(1,1,0));
+    _renderObjects.back().setPosition(glm::vec3(0,1,0));
     sf::Clock clock;
     sf::Event event;
     _player->setPosition(glm::vec3(-4,2,0));
+    sf::Mouse m;
 
     while(isRunning) {
 
@@ -68,12 +69,10 @@ void Game::run() {
         }
 
         _window->setActive(true);
-        
+        std::cout << _renderObjects.size() << "\n";
         Time::setDeltaTime();
-
-
-        _player->handleMouseMoves(*_window);
-        _player->processInput();
+        
+        _player->update(*_window,_renderObjects);
         _renderer->render();
 
 
@@ -82,12 +81,11 @@ void Game::run() {
 
         fps += 1;
         if(clock.getElapsedTime().asMilliseconds() > 999) {
-            std::cout << "FPS: " << fps << "\n";
+            //std::cout << "FPS: " << fps << "\n";
             fps=0;
 
             clock.restart();
         }
-        
     }
 
     _window->close();
