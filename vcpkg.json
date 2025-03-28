@@ -1,7 +1,25 @@
 {
   "dependencies": [
-    "sfml",
-    "glew",
-    "glm"
+    {
+      "name" : "sfml",
+      "version>=" : "2.6.1"
+    },
+    {
+      "name" : "glew",
+      "version>=" : "2.2.0#6"
+    },
+    {
+      "name" : "glm",
+      "version>=" : "1.0.1"
+    }
+  ],
+
+  "builtin-baseline": "e2e3f654bc45c28f2696ace32d66f28429bb3b28",
+
+  "overrides": [
+    { 
+      "name": "sfml", 
+      "version": "2.6.1" 
+    }
   ]
 }
