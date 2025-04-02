@@ -1,4 +1,4 @@
-#include "include/Player.h"
+#include "../include/Player.h"
 #include <iostream>
 
 Player::Player() : hp(100)/*, _currentLookingCube(lookingAt())*/{

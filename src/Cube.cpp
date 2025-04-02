@@ -1,4 +1,4 @@
-#include "include/Cube.h"
+#include "../include/Cube.h"
 
 Cube::Cube(const types& typeID) 
     : _typeID(typeID),

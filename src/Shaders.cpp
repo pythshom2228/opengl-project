@@ -1,4 +1,4 @@
-#include "include/Shaders.h"
+#include "../include/Shaders.h"
 
 Shader::Shader(const std::string& filePath) : shaderPath(filePath) {
     source = parseShader(filePath);

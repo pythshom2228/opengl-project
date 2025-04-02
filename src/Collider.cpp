@@ -1,4 +1,4 @@
-#include "include/Collider.h"
+#include "../include/Collider.h"
 
 
 Collider::Collider(const std::array<std::int32_t,2> scale) : _scale(scale) {}

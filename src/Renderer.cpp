@@ -1,4 +1,4 @@
-#include "include/Renderer.h"
+#include "../include/Renderer.h"
 
 Renderer::Renderer(std::vector<Cube>* renderObjectsptr,Camera* cameraptr)
  : _renderObjectsptr(renderObjectsptr), _cameraptr(cameraptr) {

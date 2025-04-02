@@ -1,5 +1,5 @@
 #define _DEBUG
-#include "include/Game.h"
+#include "../include/Game.h"
 
 
 

@@ -1,4 +1,4 @@
-#include "include/Cross.h"
+#include "../include/Cross.h"
 
  const std::array<float,16> Cross::vertexes = {
     0.5f,0.1f,
