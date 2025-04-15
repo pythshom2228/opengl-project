@@ -1,4 +1,5 @@
 #include "../include/Cube.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 Cube::Cube(const types& typeID) 
     : _typeID(typeID),
@@ -116,8 +117,6 @@ void Cube::popRenderSide(sides side) {
 }
 
 void Cube::pushRenderSide(sides side) {
-    if(this->_currentRenderSides.count(side)) return;
-
     this->_currentRenderSides.insert({side,buffer.EBO[side]});
 }
 
@@ -126,3 +125,13 @@ std::unordered_map<Cube::sides,const unsigned int>& Cube::getCurrentRendrSides()
     return this->_currentRenderSides;
 }
 
+void Cube::setModelMatrix() {
+    if(!isModelMatrixChanged) {
+        _modelMatrix = glm::translate(glm::mat4(1.0),this->_position);
+        isModelMatrixChanged = 1;
+    }
+}
+
+const glm::mat4& Cube::getModelMatrix() {
+    return _modelMatrix;
+}

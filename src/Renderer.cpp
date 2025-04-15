@@ -51,15 +51,33 @@ void Renderer::render() {
     _cameraptr->view =  glm::lookAt(_cameraptr->cameraPos, _cameraptr->cameraPos + _cameraptr->cameraFront, _cameraptr->cameraUp), 
     _cameraptr->projection = glm::perspective(glm::radians(_cameraptr->zoom), 1200.0f / 800.0f, 0.1f, 1000.0f);
 
-    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"projection"),1,GL_FALSE,glm::value_ptr(_cameraptr->projection));
-    glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"view"),1,GL_FALSE,glm::value_ptr(_cameraptr->view));
+    glUniformMatrix4fv(
+        glGetUniformLocation(_shaders["basic"].getID(),"projection"),
+        1,
+        GL_FALSE,
+        glm::value_ptr(_cameraptr->projection)
+    );
+
+    glUniformMatrix4fv(
+        glGetUniformLocation(_shaders["basic"].getID(),"view"),
+        1,
+        GL_FALSE,
+        glm::value_ptr(_cameraptr->view)
+    );
 
     glBindVertexArray(Cube::buffer.VAO);
     for(auto& cube : *_renderObjectsptr) {
-        _cameraptr->model = {1.0};
-        _cameraptr->model = glm::translate(_cameraptr->model,cube.getPosition());
+        cube.setModelMatrix();     
         
-        glUniformMatrix4fv(glGetUniformLocation(_shaders["basic"].getID(),"model"),1,GL_FALSE,glm::value_ptr(_cameraptr->model));
+        //cube._modelMatrix = glm::translate(glm::mat4(1.0),cube.getPosition());  
+        
+        glUniformMatrix4fv(
+            glGetUniformLocation(_shaders["basic"].getID(),"model"),
+            1,
+            GL_FALSE,
+            glm::value_ptr(cube.getModelMatrix())
+        );
+
 
         glBindVertexArray(cube.buffer.VAO);
         glBindTexture(GL_TEXTURE_2D,*_textures[cube.getTypeID()].getID());
@@ -92,8 +110,6 @@ void Renderer::generateCubeBuffer() {
     glBindBuffer(GL_ARRAY_BUFFER,Cube::buffer.VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Cube::vertexes[0]) * Cube::vertexes.size(), Cube::vertexes.data(), GL_STATIC_DRAW);
 
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Cube::buffer.EBO[Cube::sides::back]);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(Cube::indices[Cube::sides::back].elements[0])*Cube::indices[Cube::sides::back].elements.size(),Cube::indices[Cube::sides::back].elements.data(),GL_STATIC_DRAW);
     for(std::size_t next = 0; next < CUBE_SIDES; next++) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Cube::buffer.EBO[next]);
         glBufferData(

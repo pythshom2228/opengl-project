@@ -9,14 +9,14 @@ Player::Player() : hp(100)/*, _currentLookingCube(lookingAt())*/{
 }
 
 void Player::update(const sf::Window& window,std::vector<Cube>& _cubes) {
-   // lookingAt(_cubes);
+    lookingAt(_cubes);
     processInput(_cubes);
     handleMouseMoves(window);
 }
 
-// Cube& Player::lookingAt(std::vector<Cube>& _cubes) {
-    
-// }
+void Player::lookingAt(std::vector<Cube>& _cubes) {
+   //std::cout << lookVector.x << " " << lookVector.y << " " << lookVector.z << "\n";
+}
 
 void Player::processInput(std::vector<Cube>& _cubes) {
     static sf::Clock putTiming;
@@ -62,10 +62,6 @@ void Player::processInput(std::vector<Cube>& _cubes) {
 
     else if(_keyboard.isKeyPressed(sf::Keyboard::Num9))
         _currentHoldingCube = _quickInventory[8];
-
-
-
-
 
 
 
@@ -149,12 +145,12 @@ glm::vec3 Player::getPosition() {
 
 //TODO доработать
 void Player::putCube(std::vector<Cube>& _cubes) {
-    static const std::uint32_t cubePittingDistance = 2;
+    static const std::uint32_t cubePuttingDistance = 2;
     auto pos = this->getPosition() + 
     glm::vec3(
-        camera.cameraFront.x*cubePittingDistance,
-        camera.cameraFront.y*cubePittingDistance,
-        camera.cameraFront.z*cubePittingDistance
+        lookVector.x*cubePuttingDistance,
+        lookVector.y*cubePuttingDistance,
+        lookVector.z*cubePuttingDistance
     );
 
     _cubes.emplace_back(this->getCurrentHoldingCube());

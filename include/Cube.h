@@ -59,15 +59,22 @@ struct Cube {
 
     std::unordered_map<sides,const unsigned int>& getCurrentRendrSides();
 
+
+    void setModelMatrix(); 
+    const glm::mat4& getModelMatrix();
+
+
 private:
     static constexpr const std::size_t _cubeMaxCount = 64;
 
     //Collider _cubeCollider;
 
+
     std::unordered_map<sides,const unsigned int> _currentRenderSides;
 
-    
+    bool isModelMatrixChanged = 0; 
+    glm::mat4 _modelMatrix = {1.0}; 
 
-    glm::vec3 _position;
+    glm::vec3 _position = {0.0f,0.0f,0.0f};
     const types _typeID;    
 };

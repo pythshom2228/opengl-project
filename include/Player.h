@@ -37,9 +37,8 @@ public:
     
 
 private:
-    glm::vec3 lookVector = this->getPosition() + glm::vec3(camera.cameraFront.x*3,camera.cameraFront.y*3,camera.cameraFront.z*3);
-
-    Cube& lookingAt(std::vector<Cube>& _cubes);
+    glm::vec3& lookVector = camera.cameraFront;
+    void lookingAt(std::vector<Cube>& _cubes);
 
     void processInput(std::vector<Cube>& _cubes);
     void handleMouseMoves(const sf::Window& window);
