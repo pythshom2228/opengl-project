@@ -11,6 +11,8 @@ I will add some more things to this project in the future
 
 
 ## How to build
+Supported Compilers: gcc, MinGw
+
 To build the project, first clone it into your folder:
 ```
 git clone https://github.com/pythshoma228/opengl-project.git
