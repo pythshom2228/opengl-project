@@ -69,7 +69,6 @@ void Game::run() {
         }
 
         _window->setActive(true);
-        std::cout << _renderObjects.size() << "\n";
         Time::setDeltaTime();
         
         _player->update(*_window,_renderObjects);
@@ -81,7 +80,7 @@ void Game::run() {
 
         fps += 1;
         if(clock.getElapsedTime().asMilliseconds() > 999) {
-            //std::cout << "FPS: " << fps << "\n";
+            std::cout << "FPS: " << fps << "\n";
             fps=0;
 
             clock.restart();
